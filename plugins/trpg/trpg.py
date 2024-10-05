@@ -34,7 +34,10 @@ class Trpg(Plugin):
             msg: ChatMessage = e_context['context']['msg']
             reply = Reply()
             reply.type = ReplyType.TEXT
-            reply.content = f'执行{para[1]}d{para[0]},{msg.from_user_nickname}的投掷结果为：{str(dice.generate_random_integers(para[1], para[0]))}'
+            if msg.is_group:
+                reply.content = f'执行{para[1]}d{para[0]},{msg.actual_user_nickname}的投掷结果为：{str(dice.generate_random_integers(para[1], para[0]))}'
+            else:
+                reply.content = f'执行{para[1]}d{para[0]},{msg.from_user_nickname}的投掷结果为：{str(dice.generate_random_integers(para[1], para[0]))}'
             e_context['reply'] = reply
             e_context.action = EventAction.BREAK_PASS
             return
